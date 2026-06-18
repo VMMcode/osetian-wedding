@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Рустам & Кристина</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="preloader" id="preloader" role="status" aria-label="Загрузка">
+      <div class="preloader__track">
+        <img
+          class="paw"
+          src="src/right-paw-icon.svg"
+          alt=""
+          style="--row: 0; --side: 1"
+        />
+        <img
+          class="paw"
+          src="src/left-paw-icon.svg"
+          alt=""
+          style="--row: 1; --side: -1"
+        />
+        <img
+          class="paw"
+          src="src/right-paw-icon.svg"
+          alt=""
+          style="--row: 2; --side: 1"
+        />
+        <img
+          class="paw"
+          src="src/left-paw-icon.svg"
+          alt=""
+          style="--row: 3; --side: -1"
+        />
+        <img
+          class="paw"
+          src="src/right-paw-icon.svg"
+          alt=""
+          style="--row: 4; --side: 1"
+        />
+        <img
+          class="paw"
+          src="src/left-paw-icon.svg"
+          alt=""
+          style="--row: 5; --side: -1"
+        />
+        <img
+          class="paw"
+          src="src/right-paw-icon.svg"
+          alt=""
+          style="--row: 6; --side: 1"
+        />
+      </div>
+    </div>
+
+    <section class="hero" id="hero">
+      <div class="hero__stage" id="heroStage">
+        <video
+          class="hero__video"
+          id="heroVideo"
+          src="src/hero-bg.mp4"
+          muted
+          playsinline
+          preload="auto"
+        ></video>
+      </div>
+
+      <img
+        class="hero__seal hero__seal--fly"
+        id="heroSeal"
+        src="src/wax-seal-img.png"
+        alt=""
+      />
+
+      <div class="hero__content" id="heroContent">
+        <div class="hero__top">
+          <div class="container">
+            <div class="hero__seal-slot">
+              <img
+                class="hero__emblem"
+                id="heroEmblem"
+                src="src/wax-seal-img.png"
+                alt=""
+              />
+            </div>
+            <p class="hero__subtitle">приглашаем вас на свадьбу</p>
+            <h1 class="hero__title">Рустам <span>&amp;</span> Кристина</h1>
+            <p class="hero__date">7 августа 2026</p>
+            <p class="hero__meta">
+              13:00 · Art Hotel Fiagdon · Северная Осетия
+            </p>
+          </div>
+        </div>
+        <div class="hero__img">
+          <img src="src/landscape-img.svg" alt="" />
+          <div class="hero__music" id="musicControl">
+            <div class="hero__wave hero__wave--left" aria-hidden="true"></div>
+            <button
+              class="hero__play"
+              id="musicToggle"
+              type="button"
+              aria-label="Включить музыку"
+            >
+              <img class="hero__play-icon" src="src/play-icon.svg" alt="" />
+            </button>
+            <div class="hero__wave hero__wave--right" aria-hidden="true"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="countdown" id="countdown">
+      <div class="container">
+        <div class="countdown__inner">
+          <h2 class="countdown__heading">Дорогие гости</h2>
+
+          <p class="countdown__invite">
+            Мы&nbsp;собираемся отметить один из&nbsp;самых важных дней нашей
+            жизни в&nbsp;кругу людей, чьё присутствие для&nbsp;нас действительно
+            ценно. Если&nbsp;вам близка эта история&nbsp;— будем счастливы
+            разделить её вместе с&nbsp;вами.
+          </p>
+
+          <h2 class="counter__title">До&nbsp;свадьбы осталось</h2>
+
+          <div class="counter__grid">
+            <div class="counter__item" data-unit="days">
+              <svg class="counter__ring" viewBox="0 0 100 100">
+                <circle
+                  class="counter__track"
+                  cx="50"
+                  cy="50"
+                  r="45"
+                  pathLength="100"
+                />
+                <circle
+                  class="counter__progress"
+                  cx="50"
+                  cy="50"
+                  r="45"
+                  pathLength="100"
+                />
+              </svg>
+              <div class="counter__value">
+                <span class="counter__num">00</span>
+                <span class="counter__label">дней</span>
+              </div>
+            </div>
+
+            <div class="counter__item" data-unit="hours">
+              <svg class="counter__ring" viewBox="0 0 100 100">
+                <circle
+                  class="counter__track"
+                  cx="50"
+                  cy="50"
+                  r="45"
+                  pathLength="100"
+                />
+                <circle
+                  class="counter__progress"
+                  cx="50"
+                  cy="50"
+                  r="45"
+                  pathLength="100"
+                />
+              </svg>
+              <div class="counter__value">
+                <span class="counter__num">00</span>
+                <span class="counter__label">часов</span>
+              </div>
+            </div>
+
+            <div class="counter__item" data-unit="minutes">
+              <svg class="counter__ring" viewBox="0 0 100 100">
+                <circle
+                  class="counter__track"
+                  cx="50"
+                  cy="50"
+                  r="45"
+                  pathLength="100"
+                />
+                <circle
+                  class="counter__progress"
+                  cx="50"
+                  cy="50"
+                  r="45"
+                  pathLength="100"
+                />
+              </svg>
+              <div class="counter__value">
+                <span class="counter__num">00</span>
+                <span class="counter__label">минут</span>
+              </div>
+            </div>
+
+            <div class="counter__item" data-unit="seconds">
+              <svg class="counter__ring" viewBox="0 0 100 100">
+                <circle
+                  class="counter__track"
+                  cx="50"
+                  cy="50"
+                  r="45"
+                  pathLength="100"
+                />
+                <circle
+                  class="counter__progress"
+                  cx="50"
+                  cy="50"
+                  r="45"
+                  pathLength="100"
+                />
+              </svg>
+              <div class="counter__value">
+                <span class="counter__num">00</span>
+                <span class="counter__label">секунд</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="location">
+      <div class="container">
+        <div class="location__inner">
+          <h2 class="location__title">Локация</h2>
+          <p class="location__address">Art Hotel Fiagdon</p>
+          <p class="location__subtitle">42.818302 · 44.261708</p>
+          <div class="location__img">
+            <img src="src/location-img.png" alt="" />
+          </div>
+          <a href="https://yandex.by/maps/-/CTAIU0M5" class="location__btn"
+            >Построить маршрут</a
+          >
+        </div>
+      </div>
+    </section>
+
+    <section class="dresscode" id="dresscode">
+      <div class="container">
+        <div class="dresscode__inner">
+          <div class="dresscode__head">
+            <h2 class="dresscode__title">Дресс-код</h2>
+            <p class="dresscode__subtitle">внешний вид</p>
+          </div>
+
+          <div class="dresscode__img">
+            <img src="src/dresscode-icon.svg" alt="" />
+          </div>
+
+          <p class="dresscode__text">
+            Формат вечера&nbsp;— камерный и&nbsp;особенный.<br />
+            Дресс-код&nbsp;— элегантность без&nbsp;лишних слов.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="gifts" id="gifts">
+      <div class="container">
+        <div class="gifts__inner">
+          <p class="gifts__lead">
+            Мы не&nbsp;собираем много гостей<br />
+            Мы собираем своих людей
+          </p>
+          <p class="gifts__text">
+            Лучший подарок для&nbsp;нас&nbsp;— ваше присутствие. Если&nbsp;вы
+            захотите дополнить его знаком внимания, мы&nbsp;будем благодарны
+            за&nbsp;конверт с&nbsp;тёплыми пожеланиями.
+          </p>
+          <div class="gifts__img">
+            <img src="src/gift-img.png" alt="" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="form" id="rsvp">
+      <div class="container">
+        <div class="form__inner">
+          <div class="form__head">
+            <h2 class="form__title">Будете с нами?</h2>
+            <p class="form__subtitle">
+              Для&nbsp;того, чтобы мы&nbsp;могли сделать торжество максимально
+              комфортным для&nbsp;каждого гостя, пожалуйста, ответьте
+              на&nbsp;несколько вопросов
+            </p>
+          </div>
+
+          <form class="form__form" id="rsvpForm" novalidate>
+            <!-- Имя -->
+            <div class="form__field">
+              <label class="form__label" for="rsvpName">Имя и фамилия</label>
+              <input
+                class="form__input"
+                type="text"
+                id="rsvpName"
+                name="name"
+                placeholder="например, Семен Данилов"
+                autocomplete="name"
+                required
+              />
+            </div>
+
+            <!-- Присутствие -->
+            <div class="form__field">
+              <span class="form__label">Подтверждение присутствия</span>
+              <div class="form__options" role="radiogroup">
+                <label class="form__option">
+                  <input type="radio" name="attendance" value="Да, буду" required />
+                  <span>Да, буду</span>
+                </label>
+                <label class="form__option">
+                  <input type="radio" name="attendance" value="Возможно" />
+                  <span>Возможно</span>
+                </label>
+                <label class="form__option">
+                  <input type="radio" name="attendance" value="Не смогу" />
+                  <span>Не смогу</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Гости -->
+            <div class="form__field">
+              <span class="form__label">Количество гостей</span>
+              <div class="form__stepper">
+                <button
+                  type="button"
+                  class="form__step"
+                  data-step="-1"
+                  aria-label="Уменьшить"
+                >
+                  −
+                </button>
+                <span class="form__count" id="guestCount">1</span>
+                <input type="hidden" name="guests" id="guestInput" value="1" />
+                <button
+                  type="button"
+                  class="form__step"
+                  data-step="1"
+                  aria-label="Увеличить"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+
+            <!-- Напитки -->
+            <div class="form__field">
+              <div class="form__labels">
+                <span class="form__label">Напитки</span>
+                <span class="form__hint">можно выбрать один или несколько вариантов</span>
+              </div>
+              <div class="form__options form__options--wrap">
+                <label class="form__option">
+                  <input type="checkbox" name="drinks" value="Вино" />
+                  <span>Вино</span>
+                </label>
+                <label class="form__option">
+                  <input type="checkbox" name="drinks" value="Шампанское" />
+                  <span>Шампанское</span>
+                </label>
+                <label class="form__option">
+                  <input type="checkbox" name="drinks" value="Крепкий алкоголь" />
+                  <span>Крепкий алкоголь</span>
+                </label>
+                <label class="form__option">
+                  <input
+                    type="checkbox"
+                    name="drinks"
+                    value="Безалкогольные напитки"
+                  />
+                  <span>Безалкогольные напитки</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Кнопка отправки с собакой Чивасом -->
+            <div class="form__submit-area">
+              <img
+                class="form__dog"
+                src="src/dog-for-btn.png"
+                alt=""
+                aria-hidden="true"
+              />
+              <button type="submit" class="form__submit">
+                Отправить ответ
+              </button>
+            </div>
+
+            <p class="form__status" id="rsvpStatus" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section class="rules" id="rules">
+      <div class="container">
+        <div class="rules__inner">
+          <h2 class="rules__title">Правила стаи</h2>
+
+          <div class="rules__text">
+            <p>
+              Телефоны можно оставить при&nbsp;себе, а&nbsp;вот сторис, рилсы
+              и&nbsp;прямые эфиры&nbsp;— лучше оставить за&nbsp;пределами
+              праздника.
+            </p>
+            <p>
+              Жених, невеста и&nbsp;гости приехали отдыхать, а&nbsp;не
+              становиться контентом.
+            </p>
+            <p>
+              Поэтому просим ничего не&nbsp;публиковать в&nbsp;социальных сетях
+              без&nbsp;нашего разрешения.
+            </p>
+            <p>
+              Взамен обещаем: живые эмоции будут гораздо интереснее любых
+              сторис.
+            </p>
+          </div>
+
+          <p class="rules__sign">— Чивас</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="footer" id="footer">
+      <div class="footer__inner">
+        <h2 class="footer__title">До встречи среди&nbsp;гор</h2>
+      </div>
+      <div class="footer__scene">
+        <img
+          class="footer__sun"
+          id="footerSun"
+          src="src/sun-icon.svg"
+          alt=""
+          aria-hidden="true"
+        />
+        <img class="footer__img" src="src/footer-img.png" alt="" />
+      </div>
+    </section>
+
+    <audio id="music" src="src/music.mp3" loop preload="auto"></audio>
+    <script src="script.js"></script>
+  </body>
+</html>
