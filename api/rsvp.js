@@ -52,11 +52,12 @@ module.exports = async (req, res) => {
       throw new Error("telegram env missing");
     }
     const text =
-      "🤍 Новый ответ RSVP\n\n" +
-      `Имя: ${name}\n` +
-      `Присутствие: ${attendance}\n` +
-      `Гостей: ${guests}\n` +
-      `Напитки: ${drinks || "—"}`;
+      "🎉 Ура! Новый ответ от гостя 💌\n\n" +
+      `🙋 Имя: ${name}\n` +
+      `✨ Присутствие: ${attendance}\n` +
+      `👥 Гостей: ${guests}\n` +
+      `🥂 Напитки: ${drinks || "—"}\n\n` +
+      "🐾 С любовью, Чивас";
 
     const post = async (chatId) => {
       const r = await fetch(
