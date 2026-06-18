@@ -38,7 +38,6 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
-/* Блокировка скролла, пока идёт интро hero (видео + сборка контента) */
 html.is-scroll-locked,
 html.is-scroll-locked body {
   overflow: hidden;
@@ -114,7 +113,7 @@ section {
   padding: 0 clamp(1.6rem, 4vw, 2rem);
 }
 
-/* --- Прелоадер (следы лап, уходящие вдаль) --- */
+/* --- Прелоадер --- */
 .preloader {
   position: fixed;
   inset: 0;
@@ -137,14 +136,13 @@ section {
 .preloader__track {
   position: relative;
   width: 22rem;
-  height: 24rem; /* высота под контент — чтобы дорожка была по центру */
+  height: 24rem;
 }
 
 .paw {
-  --gap: 3.73rem; /* вертикальный шаг между следами */
-  --spread: 1.77rem; /* отступ следа от центральной оси */
-  --base-w: 3.5rem; /* размер нижнего (ближнего) следа */
-  /* перспектива: чем выше ряд, тем меньше и бледнее */
+  --gap: 3rem;
+  --spread: 1.7rem;
+  --base-w: 3.5rem;
   --scale: calc(1 - var(--row) * 0.11);
   --o: calc(1 - var(--row) * 0.12);
 
@@ -184,7 +182,6 @@ section {
 
 /* --- Hero-секция --- */
 .hero {
-  /* стартовое положение печати на письме (берётся в JS для анимации) */
   --seal-x: 57%;
   --seal-y: 89%;
   --seal-start-w: 25%;
@@ -198,7 +195,6 @@ section {
   overflow: hidden;
 }
 
-/* Видео-сцена: заполняет весь экран в пределах колонки (cover) */
 .hero__stage {
   position: absolute;
   inset: 0;
@@ -224,9 +220,6 @@ section {
   }
 }
 
-/* Летящая печать: позицию/масштаб/повороты задаёт JS через CSS-переменные.
-   Базовая ширина (--seal-base) выставляется в JS = размеру эмблемы в покое,
-   поэтому конечный масштаб равен 1. */
 .hero__seal--fly {
   position: fixed;
   top: 0;
@@ -249,24 +242,20 @@ section {
 }
 
 @keyframes seal-fly {
-  /* старт — на сургуче в кадре письма */
   0% {
     opacity: 1;
     transform: translate(var(--x0), var(--y0)) translate(-50%, -50%)
       scale(var(--s0));
   }
-  /* плавно увеличиваясь, уходит в центр экрана */
   55% {
     opacity: 1;
     transform: translate(var(--x1), var(--y1)) translate(-50%, -50%)
       scale(var(--s1));
   }
-  /* минимальная задержка на максимуме */
   63% {
     transform: translate(var(--x1), var(--y1)) translate(-50%, -50%)
       scale(var(--s1));
   }
-  /* уменьшается и встаёт на своё место в контенте */
   100% {
     opacity: 1;
     transform: translate(var(--x2), var(--y2)) translate(-50%, -50%)
@@ -285,8 +274,6 @@ section {
   pointer-events: none;
 }
 
-/* Текстовая часть: занимает всё пространство над пейзажем
-   и центрирует содержимое в нём */
 .hero__top {
   flex: 1 1 auto;
   min-height: 0;
@@ -297,7 +284,7 @@ section {
 
 .hero.is-revealing .hero__content {
   animation: hero-content-in 1.2s ease forwards;
-  animation-delay: 2.8s; /* пока печать уменьшается на место */
+  animation-delay: 2.8s;
 }
 
 .hero.is-done .hero__content {
@@ -323,7 +310,75 @@ section {
   text-align: center;
 }
 
-/* Место печати в покое (эмблема над именами) */
+.hero__branches {
+  --branch-angle: 30deg;
+  --branch-top: 8rem;
+  position: absolute;
+  inset: 0;
+  z-index: 12;
+  pointer-events: none;
+}
+
+.hero__branch {
+  position: absolute;
+  top: var(--branch-top);
+  width: clamp(13rem, 46vw, 18rem);
+  height: auto;
+}
+
+.hero__branch--left {
+  left: -1.5rem;
+  transform-origin: left center;
+  transform: rotate(calc(-1 * var(--branch-angle)));
+  clip-path: inset(0 100% 0 0);
+}
+
+.hero__branch--right {
+  right: -1.5rem;
+  transform-origin: right center;
+  transform: rotate(var(--branch-angle));
+  clip-path: inset(0 0 0 100%);
+}
+
+.hero.is-revealing .hero__branch--left {
+  animation: branch-grow-left 1.6s ease forwards;
+  animation-delay: 3.2s; /* после появления контента */
+}
+
+.hero.is-revealing .hero__branch--right {
+  animation: branch-grow-right 1.6s ease forwards;
+  animation-delay: 3.2s;
+}
+
+@keyframes branch-grow-left {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes branch-grow-right {
+  from {
+    clip-path: inset(0 0 0 100%);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__branch--left,
+  .hero__branch--right {
+    clip-path: none;
+  }
+  .hero.is-revealing .hero__branch--left,
+  .hero.is-revealing .hero__branch--right {
+    animation: none;
+  }
+}
+
 .hero__seal-slot {
   width: clamp(8rem, 28vw, 10rem);
   aspect-ratio: 1.1 / 1;
@@ -337,7 +392,7 @@ section {
 }
 
 .hero.is-done .hero__emblem {
-  opacity: 1; /* плавная передача от летящей печати к статичной */
+  opacity: 1;
   transition: opacity 0.2s ease;
 }
 
@@ -370,12 +425,11 @@ section {
   line-height: 1.4;
 }
 
-/* Пейзаж: на всю ширину колонки, прибит к низу вьюпорта hero */
 .hero__img {
   position: relative;
   flex: 0 0 auto;
   width: 100%;
-  margin-top: auto; /* прижать к низу, если текста мало */
+  margin-top: auto;
   pointer-events: none;
 }
 
@@ -385,12 +439,13 @@ section {
 }
 
 /* --- Музыкальный контрол: кнопка на солнце, волны по бокам --- */
-/* Солнце в SVG: центр 50% / 20.1% от верха пейзажа, диаметр 25.9% ширины */
 .hero__music {
-  --wave-gap: 2.8rem; /* расстояние от солнца до групп волн */
+  --music-top: 34.6%;
+  --wave-gap: 2rem;
+  --music-color: var(--accent-color);
   position: absolute;
   left: 0;
-  top: 20.1%;
+  top: var(--music-top);
   width: 100%;
   transform: translateY(-50%);
   display: flex;
@@ -424,11 +479,10 @@ section {
   width: 0.25rem;
   height: 18%;
   border-radius: 1rem;
-  background-color: #2c1f14;
+  background-color: var(--music-color);
   transition: height 0.07s linear;
 }
 
-/* Центральная кнопка размером с солнце — триангл по центру */
 .hero__play {
   flex: 0 0 auto;
   width: 25.9%;
@@ -443,12 +497,11 @@ section {
   grid-area: 1 / 1;
   align-self: center;
   justify-self: center;
-  width: 2.2rem; /* такой же размер, как у иконки паузы */
+  width: 2.2rem;
   height: 2.2rem;
   object-fit: contain;
 }
 
-/* Иконка «пауза» (две полоски) для состояния воспроизведения */
 .hero__play::before,
 .hero__play::after {
   content: "";
@@ -456,7 +509,7 @@ section {
   width: 0.5rem;
   height: 2.2rem;
   border-radius: 1rem;
-  background-color: #2c1f14;
+  background-color: var(--music-color);
   opacity: 0;
 }
 .hero__play::before {
@@ -537,9 +590,7 @@ section {
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background-color: rgba(84, 15, 18, 0.9);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background-color: var(--accent-color);
 }
 
 .counter__ring {
@@ -613,10 +664,9 @@ section {
 }
 
 .location__subtitle {
-  margin-top: -1rem;
+  margin-top: -1.5rem;
   opacity: 0.5;
   font-size: 1.4rem;
-  margin-bottom: 1rem;
 }
 
 .location__img {
@@ -624,9 +674,22 @@ section {
   width: 140vw;
   max-width: none;
   height: 25rem;
-  border-radius: 50%;
-  overflow: hidden;
+  overflow-x: clip;
 }
+.location__img::before,
+.location__img::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 6rem;
+  border-radius: 50%;
+  background-color: var(--bg-color);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+.location__img::before { top: -2rem; }
+.location__img::after { bottom: -2rem; }
 .location__img img {
   display: block;
   width: 100%;
@@ -636,7 +699,7 @@ section {
   transition: filter 0.4s ease;
 }
 .location__img:hover img {
-  filter: sepia(1.5) saturate(3) hue-rotate(-50deg) brightness(0.75);
+  filter: hue-rotate(-50deg) brightness(0.75);
 }
 
 .location__btn {
@@ -662,24 +725,10 @@ section {
   text-align: center;
 }
 
-.dresscode__head {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.4rem;
-}
-
 .dresscode__title {
   font-family: var(--h-font);
   font-size: clamp(2.8rem, calc(1.6rem + 5vw), 3.6rem);
   color: var(--accent-color);
-}
-
-.dresscode__subtitle {
-  font-size: 1.3rem;
-  letter-spacing: 0.3rem;
-  text-transform: uppercase;
-  opacity: 0.7;
 }
 
 .dresscode__img {
@@ -808,7 +857,6 @@ section {
   border-bottom-color: var(--accent-color);
 }
 
-/* Кнопки-опции (присутствие — радио, напитки — чекбоксы) */
 .form__options {
   display: flex;
   gap: 1rem;
@@ -819,8 +867,7 @@ section {
 .form__options--wrap {
   flex-wrap: wrap;
 }
-/* «Вино» и «Шампанское» — по половине в первом ряду,
-   остальные напитки — на всю ширину */
+
 .form__options--wrap .form__option {
   flex: 1 1 100%;
 }
@@ -945,7 +992,7 @@ section {
   color: var(--text-color);
 }
 
-/* --- Rules-секция (правила стаи, от Чиваса) --- */
+/* --- Rules-секция --- */
 .rules__inner {
   display: flex;
   flex-direction: column;
@@ -978,7 +1025,7 @@ section {
   color: var(--accent-color);
 }
 
-/* --- Footer-секция (финал: закат за горами) --- */
+/* --- Footer-секция --- */
 .footer {
   position: relative;
   width: 100%;
@@ -996,10 +1043,9 @@ section {
   position: relative;
   z-index: 3;
   font-family: var(--h-font);
-  font-size: min(9vw, 3.4rem); /* в одну строку на любом экране */
+  font-size: min(9vw, 3.3rem);
   white-space: nowrap;
   text-align: center;
-  /* градиент сверху вниз: 40% тёмный → 100% тёплый оранжевый */
   background: linear-gradient(180deg, #171b1f 40%, #b4622b 100%);
   -webkit-background-clip: text;
   background-clip: text;
@@ -1014,43 +1060,39 @@ section {
 
 .footer__img {
   position: relative;
-  z-index: 2; /* фото перекрывает солнце — оно садится за верхнюю кромку */
+  z-index: 2;
   display: block;
   width: 100%;
   height: auto;
 }
 
 .footer__sun {
-  --sun-x: 65%; /* ← положение солнца по горизонтали (0% слева … 100% справа) */
+  --sun-x: 65%;
   position: absolute;
   left: var(--sun-x);
   top: 0;
-  width: 120px; /* макс. размер; JS уменьшает до 60px через scale */
+  width: 120px;
   height: 120px;
-  margin-top: -60px; /* центр солнца на верхней кромке фото */
-  z-index: 1; /* за фото */
+  margin-top: -60px;
+  z-index: 1;
   transform: translateX(-50%) translateY(-20px) scale(1);
   transform-origin: center center;
   pointer-events: none;
 }
 
-/* Закат запускается, когда футер появился в кадре */
 .footer.is-setting .footer__sun {
   animation: sun-set 3.9s cubic-bezier(0.33, 0, 0.2, 1) forwards;
 }
 
 @keyframes sun-set {
-  /* старт — солнце целиком над кромкой фото */
   from {
     transform: translateX(-50%) translateY(-20px) scale(1);
   }
-  /* финал — уменьшилось вдвое и село за горы */
   to {
     transform: translateX(-50%) translateY(70px) scale(0.5);
   }
 }
 
-/* Фото плавно затемняется, пока солнце садится (по настройкам из Figma) */
 .footer.is-setting .footer__img {
   animation: footer-darken 3.9s ease forwards;
 }
