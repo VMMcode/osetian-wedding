@@ -329,9 +329,14 @@ function startHero() {
   const form = document.getElementById("rsvpForm");
   if (!form) return;
 
+  // Эндпоинт serverless-функции (тот же домен на Vercel).
+  // Если фронт на другом хостинге — впиши абсолютный URL функции на Vercel.
+  const RSVP_ENDPOINT = "/api/rsvp";
+
   const countEl = document.getElementById("guestCount");
   const guestInput = document.getElementById("guestInput");
   const status = document.getElementById("rsvpStatus");
+  const submitBtn = form.querySelector(".form__submit");
 
   // Счётчик гостей
   const MIN = 1;
@@ -373,46 +378,36 @@ function startHero() {
       attendance,
       guests: Number(guestInput.value),
       drinks,
+      company: (data.get("company") || "").toString(), // honeypot
     };
 
     sendRSVP(payload);
   });
 
-  // === Отправка ответа ===
-  // Сейчас заглушка для этапа вёрстки. Для интеграции с Telegram подставить
-  // TOKEN и CHAT_ID и раскомментировать блок fetch.
+  // === Отправка ответа: serverless-функция шлёт в Telegram + Supabase ===
   async function sendRSVP(payload) {
-    console.log("RSVP payload:", payload);
+    if (submitBtn) submitBtn.disabled = true;
+    setStatus("Отправляем…");
 
-    // --- TODO: Telegram Bot API ---
-    // const TOKEN = "BOT_TOKEN";
-    // const CHAT_ID = "CHAT_ID";
-    // const text =
-    //   "🤍 Новый ответ RSVP\n\n" +
-    //   `Имя: ${payload.name}\n` +
-    //   `Присутствие: ${payload.attendance}\n` +
-    //   `Гостей: ${payload.guests}\n` +
-    //   `Напитки: ${payload.drinks.join(", ") || "—"}`;
-    // try {
-    //   const res = await fetch(
-    //     `https://api.telegram.org/bot${TOKEN}/sendMessage`,
-    //     {
-    //       method: "POST",
-    //       headers: { "Content-Type": "application/json" },
-    //       body: JSON.stringify({ chat_id: CHAT_ID, text }),
-    //     }
-    //   );
-    //   if (!res.ok) throw new Error("send failed");
-    // } catch (err) {
-    //   setStatus("Не удалось отправить. Попробуйте позже", "is-error");
-    //   return;
-    // }
+    try {
+      const res = await fetch(RSVP_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error("bad status " + res.status);
 
-    form.reset();
-    guests = 1;
-    countEl.textContent = 1;
-    guestInput.value = 1;
-    setStatus("Спасибо! Ваш ответ получен.", "is-ok");
+      form.reset();
+      guests = 1;
+      countEl.textContent = 1;
+      guestInput.value = 1;
+      setStatus("Спасибо! Ваш ответ получен.", "is-ok");
+    } catch (err) {
+      console.error("RSVP send failed:", err);
+      setStatus("Не удалось отправить. Попробуйте ещё раз", "is-error");
+    } finally {
+      if (submitBtn) submitBtn.disabled = false;
+    }
   }
 })();
 

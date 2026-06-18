@@ -286,6 +286,16 @@
           </div>
 
           <form class="form__form" id="rsvpForm" novalidate>
+            <!-- honeypot против ботов: скрыто от людей, не заполнять -->
+            <input
+              class="form__hp"
+              type="text"
+              name="company"
+              tabindex="-1"
+              autocomplete="off"
+              aria-hidden="true"
+            />
+
             <!-- Имя -->
             <div class="form__field">
               <label class="form__label" for="rsvpName">Имя и фамилия</label>
