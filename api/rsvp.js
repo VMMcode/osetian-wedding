@@ -46,7 +46,7 @@ module.exports = async (req, res) => {
 
   const { TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, DATABASE_URL } = process.env;
 
-  // --- Telegram ---
+  // --- Telegram (с обработкой миграции группы -> супергруппы) ---
   const sendTelegram = async () => {
     if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
       throw new Error("telegram env missing");
@@ -58,15 +58,34 @@ module.exports = async (req, res) => {
       `Гостей: ${guests}\n` +
       `Напитки: ${drinks || "—"}`;
 
-    const r = await fetch(
-      `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text }),
-      }
-    );
-    if (!r.ok) throw new Error("telegram " + r.status + " " + (await r.text()));
+    const post = async (chatId) => {
+      const r = await fetch(
+        `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ chat_id: chatId, text }),
+        }
+      );
+      const data = await r.json().catch(() => ({}));
+      return { ok: r.ok && data.ok, data };
+    };
+
+    let { ok, data } = await post(TELEGRAM_CHAT_ID);
+
+    // Если обычная группа стала супергруппой — Telegram вернёт новый id.
+    // Дошлём туда (сообщение не потеряется) и подскажем новый id в логах.
+    const migrateId =
+      data && data.parameters && data.parameters.migrate_to_chat_id;
+    if (!ok && migrateId) {
+      console.error(
+        "⚠️ Telegram: чат мигрировал в супергруппу. Обнови TELEGRAM_CHAT_ID на:",
+        migrateId
+      );
+      ({ ok, data } = await post(migrateId));
+    }
+
+    if (!ok) throw new Error("telegram " + JSON.stringify(data));
   };
 
   // --- Neon (Postgres) ---
